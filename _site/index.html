@@ -50,10 +50,98 @@
 	<article class="post">
 
 		
+			<h1><a href="/2014/06/08/java-lambda-tools/">Function decorators using Java8 lambdas</a></h1>
+		
+
+		<div class="post-content"><p>I’ve been recently watching some lectures of <a href="https://www.udacity.com/course/cs212">Design of Computer Programs</a> on <a href="http://www.udacity.com">Udacity</a> taught by <a href="http://en.wikipedia.org/wiki/Peter_Norvig">Peter Norvig</a> which was about function decorators in Python. It kept me thinking whether I could do this in Java with lambda expressions so I was playing around a bit … </p>
+
+<p>I started with a simple Fibonacci implementation to work with. I used the new <a href="http://docs.oracle.com/javase/8/docs/api/java/util/function/Function.html">Function</a> interface to implement the Fibonacci function and I added a little test code to calculate the 45th element of the series. </p>
+
+<div class="highlight"><pre><code class="java"><span class="kd">private</span> <span class="kd">static</span> <span class="n">Function</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">,</span> <span class="n">Long</span><span class="o">&gt;</span> <span class="n">fib</span> <span class="o">=</span> <span class="n">n</span> <span class="o">-&gt;</span> <span class="o">{</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">n</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">||</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">1</span><span class="o">)</span> <span class="k">return</span> <span class="mi">1L</span><span class="o">;</span>
+    <span class="k">return</span> <span class="n">Tools</span><span class="o">.</span><span class="na">fib</span><span class="o">.</span><span class="na">apply</span><span class="o">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="o">)</span> <span class="o">+</span> <span class="n">Tools</span><span class="o">.</span><span class="na">fib</span><span class="o">.</span><span class="na">apply</span><span class="o">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">2</span><span class="o">);</span>
+<span class="o">};</span>
+
+<span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">Function</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">,</span> <span class="n">Long</span><span class="o">&gt;</span> <span class="n">tfib</span> <span class="o">=</span> <span class="n">fib</span><span class="o">;</span>
+    <span class="kt">long</span> <span class="n">res</span> <span class="o">=</span> <span class="n">tfib</span><span class="o">.</span><span class="na">apply</span><span class="o">(</span><span class="mi">45</span><span class="o">);</span>
+    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;res = &quot;</span> <span class="o">+</span> <span class="n">res</span><span class="o">);</span>
+<span class="o">}</span>
+</code></pre></div>
+
+<p>So far so good. I extended the solution with a <em>timer</em> function which takes an another function as an argument, measures the approximate execution time and prints it out to the console.</p>
+
+<div class="highlight"><pre><code class="java"><span class="kd">private</span> <span class="kd">static</span> <span class="o">&lt;</span><span class="n">T</span><span class="o">,</span> <span class="n">K</span><span class="o">&gt;</span> <span class="n">Function</span><span class="o">&lt;</span><span class="n">T</span><span class="o">,</span> <span class="n">K</span><span class="o">&gt;</span> <span class="n">timer</span><span class="o">(</span><span class="n">Function</span><span class="o">&lt;</span><span class="n">T</span><span class="o">,</span> <span class="n">K</span><span class="o">&gt;</span> <span class="n">f</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">Function</span><span class="o">&lt;</span><span class="n">T</span><span class="o">,</span> <span class="n">K</span><span class="o">&gt;</span> <span class="n">fun</span> <span class="o">=</span> <span class="o">(</span><span class="n">args</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="o">{</span>
+        <span class="kt">long</span> <span class="n">time</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="na">currentTimeMillis</span><span class="o">();</span>
+        <span class="n">K</span> <span class="n">ret</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="na">apply</span><span class="o">(</span><span class="n">args</span><span class="o">);</span>
+        <span class="n">time</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="na">currentTimeMillis</span><span class="o">()</span> <span class="o">-</span> <span class="n">time</span><span class="o">;</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;time = &quot;</span> <span class="o">+</span> <span class="n">time</span><span class="o">);</span>
+        <span class="k">return</span> <span class="n">ret</span><span class="o">;</span>
+    <span class="o">};</span>
+    <span class="k">return</span> <span class="n">fun</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre></div>
+
+<p>I slightly modified the main function to <em>decorate</em> the Fibonacci function. So running the program now prints out the time it took to run. It took running 16 seconds on my machine. </p>
+
+<div class="highlight"><pre><code class="java"><span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">Function</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">,</span> <span class="n">Long</span><span class="o">&gt;</span> <span class="n">tfib</span> <span class="o">=</span> <span class="n">timer</span><span class="o">(</span><span class="n">fib</span><span class="o">);</span>
+    <span class="kt">long</span> <span class="n">res</span> <span class="o">=</span> <span class="n">tfib</span><span class="o">.</span><span class="na">apply</span><span class="o">(</span><span class="mi">45</span><span class="o">);</span>
+    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;res = &quot;</span> <span class="o">+</span> <span class="n">res</span><span class="o">);</span>
+<span class="o">}</span>
+</code></pre></div>
+
+<p>I added a <em>cache</em> function which also takes a function argument and stores the result of the function call in a cache which is a map where the key is the function argument and the value is the result of the function call. If the given argument can already be found in the cache then it will return that precomputed value if not then it will call the function and store the result so any subsequent requests will be served by the cache. Then I decorated the Fibonacci function with the cache function. The client code in the main function remained the same since I only changed the definition of the <em>fib</em> function. Now when I run the program it takes no time to execute since the recursion can rely on the values in the cache. </p>
+
+<div class="highlight"><pre><code class="java"><span class="kd">private</span> <span class="kd">static</span> <span class="o">&lt;</span><span class="n">T</span><span class="o">,</span> <span class="n">K</span><span class="o">&gt;</span> <span class="n">Function</span><span class="o">&lt;</span><span class="n">T</span><span class="o">,</span> <span class="n">K</span><span class="o">&gt;</span> <span class="n">cache</span><span class="o">(</span><span class="n">Function</span><span class="o">&lt;</span><span class="n">T</span><span class="o">,</span> <span class="n">K</span><span class="o">&gt;</span> <span class="n">f</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">Map</span><span class="o">&lt;</span><span class="n">T</span><span class="o">,</span> <span class="n">K</span><span class="o">&gt;</span> <span class="n">cache</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HashMap</span><span class="o">&lt;&gt;();</span>
+    <span class="n">Function</span><span class="o">&lt;</span><span class="n">T</span><span class="o">,</span> <span class="n">K</span><span class="o">&gt;</span> <span class="n">fun</span> <span class="o">=</span> <span class="o">(</span><span class="n">args</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="o">{</span>
+        <span class="n">K</span> <span class="n">ret</span> <span class="o">=</span> <span class="n">cache</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">args</span><span class="o">);</span>
+        <span class="k">if</span><span class="o">(</span> <span class="n">ret</span> <span class="o">==</span> <span class="kc">null</span> <span class="o">)</span> <span class="o">{</span>
+            <span class="n">ret</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="na">apply</span><span class="o">(</span><span class="n">args</span><span class="o">);</span>
+            <span class="n">cache</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="n">args</span><span class="o">,</span> <span class="n">ret</span><span class="o">);</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="n">ret</span><span class="o">;</span>
+    <span class="o">};</span>
+    <span class="k">return</span> <span class="n">fun</span><span class="o">;</span>
+<span class="o">}</span>
+
+<span class="kd">private</span> <span class="kd">static</span> <span class="n">Function</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">,</span> <span class="n">Long</span><span class="o">&gt;</span> <span class="n">fib</span> <span class="o">=</span> <span class="n">cache</span><span class="o">(</span><span class="n">n</span> <span class="o">-&gt;</span> <span class="o">{</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">n</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">||</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">1</span><span class="o">)</span> <span class="k">return</span> <span class="mi">1L</span><span class="o">;</span>
+    <span class="k">return</span> <span class="n">Tools</span><span class="o">.</span><span class="na">fib</span><span class="o">.</span><span class="na">apply</span><span class="o">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="o">)</span> <span class="o">+</span> <span class="n">Tools</span><span class="o">.</span><span class="na">fib</span><span class="o">.</span><span class="na">apply</span><span class="o">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">2</span><span class="o">);</span>
+<span class="o">});</span>
+</code></pre></div>
+
+<p>As a final step I added two static boolean field to allow me to turn on and off the timer and cache functions and I put a test for them in the <em>timer</em> and <em>cache</em> functions. </p>
+
+<div class="highlight"><pre><code class="java"><span class="kd">public</span> <span class="kd">static</span> <span class="kd">final</span> <span class="kt">boolean</span> <span class="n">CACHE_ON</span> <span class="o">=</span> <span class="kc">true</span><span class="o">;</span>
+<span class="kd">public</span> <span class="kd">static</span> <span class="kd">final</span> <span class="kt">boolean</span> <span class="n">TIMER_ON</span> <span class="o">=</span> <span class="kc">true</span><span class="o">;</span>
+
+<span class="k">if</span><span class="o">(</span> <span class="o">!</span><span class="n">TIMER_ON</span> <span class="o">)</span> <span class="k">return</span> <span class="n">f</span><span class="o">;</span>
+<span class="k">if</span><span class="o">(</span> <span class="o">!</span><span class="n">CACHE_ON</span> <span class="o">)</span> <span class="k">return</span> <span class="n">f</span><span class="o">;</span>
+</code></pre></div>
+
+<p>So the final code would be something like this:</p>
+
+<script src="https://gist.github.com/ezsi/1306b85ad55a9f7c15f8.js"> </script>
+
+</div>
+
+	</article>
+
+
+
+	<article class="post">
+
+		
 			<h1><a href="/2014/06/01/first-post/">First post</a></h1>
 		
 
-		<div class="post-content"><p>Since I’ve set up this blog site to start blogging, there is a high chance that I actually will do that. My intention is to share some intersting code samples or ideas that I’m curious about.</p></div>
+		<div class="post-content"><p>Since I’ve set up this blog site to start blogging, there is a high chance that I actually will do that. 
+My intention is to share some interesting code samples or ideas that I’m curious about. </p>
+
+</div>
 
 	</article>
 
