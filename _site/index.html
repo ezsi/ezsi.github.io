@@ -4,7 +4,7 @@
 <head>
 
   <meta charset="UTF-8">
-  <title>Solar Theme</title>
+  <title>Some fancy title</title>
   <meta name="viewport" content="width=device-width">
 
   <!--[if lt IE 9]>
@@ -45,7 +45,7 @@
       <nav>
         <ul>
           <li><a href="/">Home</a></li>
-          <li><a href="/archives">Archive</a></li>
+          <li><a href="/archives">Posts</a></li>
           <li><a href="/about">About</a></li>
           <li><a href="http://twitter.com/belaezsias">Twitter</a></li>
           <li><a href="/feed.xml">RSS Feed</a></li>
@@ -57,15 +57,15 @@
 
 
     <div id="content">
-      
+      <div class="blog-index">  
+  
+  
+  <h1 class="entry-title">
 
-	<article class="post">
+    <a href="/2014/06/08/java-lambda-tools/">Function decorators using Java8 lambdas</a>
 
-		
-			<h1><a href="/2014/06/08/java-lambda-tools/">Function decorators using Java8 lambdas</a></h1>
-		
-
-		<div class="post-content"><p>I’ve been recently watching some lectures of <a href="https://www.udacity.com/course/cs212">Design of Computer Programs</a> on <a href="http://www.udacity.com">Udacity</a> taught by <a href="http://en.wikipedia.org/wiki/Peter_Norvig">Peter Norvig</a> which was about function decorators in Python. It kept me thinking whether I could do this in Java with lambda expressions so I was playing around a bit … </p>
+</h1>
+<div class="entry-content"><p>I’ve been recently watching some lectures of <a href="https://www.udacity.com/course/cs212">Design of Computer Programs</a> on <a href="http://www.udacity.com">Udacity</a> taught by <a href="http://en.wikipedia.org/wiki/Peter_Norvig">Peter Norvig</a> which was about function decorators in Python. It kept me thinking whether I could do this in Java with lambda expressions so I was playing around a bit … </p>
 
 <p>I started with a simple Fibonacci implementation to work with. I used the new <a href="http://docs.oracle.com/javase/8/docs/api/java/util/function/Function.html">Function</a> interface to implement the Fibonacci function and I added a little test code to calculate the 45th element of the series. </p>
 
@@ -139,30 +139,25 @@
 <script src="https://gist.github.com/ezsi/1306b85ad55a9f7c15f8.js"> </script>
 
 </div>
+<div>
+<a href="https://twitter.com/share" class="twitter-share-button" data-via="belaezsias">Tweet</a>
+   
+<!-- Put this just before the closing body tag -->
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
 
-	</article>
-
-
-
-	<article class="post">
-
-		
-			<h1><a href="/2014/06/01/first-post/">First post</a></h1>
-		
-
-		<div class="post-content"><p>Since I’ve set up this blog site to start blogging, there is a high chance that I actually will do that. 
-My intention is to share some interesting code samples or ideas that I’m curious about. </p>
-
+<!-- Google + -->
+<g:plusone size="medium"></g:plusone>
+ 
+<!-- Add this just before the closing body tag of your web page --> 
+<script type="text/javascript">
+  (function() {
+    var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+    po.src = 'https://apis.google.com/js/plusone.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+  })();
+</script>
 </div>
-
-	</article>
-
-
-
-
-
-
-      <!-- Add Disqus comments. -->
+<!-- Add Disqus comments. -->
 <div id="disqus_thread"></div>
 <script type="text/javascript">
   /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
@@ -177,6 +172,13 @@ My intention is to share some interesting code samples or ideas that I’m curio
 </script>
 <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
 <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+</div>
+
+
+
+      
     </div>
 
 
