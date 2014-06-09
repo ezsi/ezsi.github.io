@@ -3,6 +3,7 @@ layout: post
 title:  "Function decorators using Java8 lambdas"
 date:   2014-06-08 11:23:25
 categories: java lambda
+redirect_from: "/"
 ---
 
 I've been recently watching some lectures of [Design of Computer Programs](https://www.udacity.com/course/cs212) on [Udacity](http://www.udacity.com) taught by [Peter Norvig](http://en.wikipedia.org/wiki/Peter_Norvig) which was about function decorators in Python. It kept me thinking whether I could do this in Java with lambda expressions so I was playing around a bit ... 
